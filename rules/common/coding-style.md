@@ -1,48 +1,48 @@
-# Coding Style
+# 编码风格
 
-## Immutability (CRITICAL)
+## 不可变性（关键）
 
-ALWAYS create new objects, NEVER mutate existing ones:
+始终创建新对象，永远不要修改现有对象：
 
 ```
-// Pseudocode
-WRONG:  modify(original, field, value) → changes original in-place
-CORRECT: update(original, field, value) → returns new copy with change
+// 伪代码
+错误：  modify(original, field, value) → 原地修改原始对象
+正确： update(original, field, value) → 返回变更的新副本
 ```
 
-Rationale: Immutable data prevents hidden side effects, makes debugging easier, and enables safe concurrency.
+理由：不可变数据防止隐藏副作用，使调试更容易，并支持安全并发。
 
-## File Organization
+## 文件组织
 
-MANY SMALL FILES > FEW LARGE FILES:
-- High cohesion, low coupling
-- 200-400 lines typical, 800 max
-- Extract utilities from large modules
-- Organize by feature/domain, not by type
+许多小文件 > 几个大文件：
+- 高内聚，低耦合
+- 典型 200-400 行，最大 800 行
+- 从大模块中提取工具
+- 按功能/领域组织，不按类型
 
-## Error Handling
+## 错误处理
 
-ALWAYS handle errors comprehensively:
-- Handle errors explicitly at every level
-- Provide user-friendly error messages in UI-facing code
-- Log detailed error context on the server side
-- Never silently swallow errors
+始终全面处理错误：
+- 在每个层级显式处理错误
+- 在面向 UI 的代码中提供用户友好的错误消息
+- 在服务端记录详细的错误上下文
+- 永远不要默默吞掉错误
 
-## Input Validation
+## 输入验证
 
-ALWAYS validate at system boundaries:
-- Validate all user input before processing
-- Use schema-based validation where available
-- Fail fast with clear error messages
-- Never trust external data (API responses, user input, file content)
+始终在系统边界验证：
+- 在处理前验证所有用户输入
+- 在可用的地方使用基于模式的验证
+- 快速失败并提供清晰的错误消息
+- 永远不要信任外部数据（API 响应、用户输入、文件内容）
 
-## Code Quality Checklist
+## 代码质量检查清单
 
-Before marking work complete:
-- [ ] Code is readable and well-named
-- [ ] Functions are small (<50 lines)
-- [ ] Files are focused (<800 lines)
-- [ ] No deep nesting (>4 levels)
-- [ ] Proper error handling
-- [ ] No hardcoded values (use constants or config)
-- [ ] No mutation (immutable patterns used)
+在标记工作完成之前：
+- [ ] 代码可读且命名良好
+- [ ] 函数小（<50 行）
+- [ ] 文件专注（<800 行）
+- [ ] 没有深层嵌套（>4 层）
+- [ ] 适当的错误处理
+- [ ] 没有硬编码值（使用常量或配置）
+- [ ] 没有可变（使用不可变模式）

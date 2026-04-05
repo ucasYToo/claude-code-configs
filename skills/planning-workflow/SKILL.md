@@ -1,206 +1,206 @@
-# Planning Workflow
+# 规划工作流
 
-Reusable patterns for creating effective implementation plans. Use these patterns when breaking down complex features into actionable steps.
+创建有效实施计划的可复用模式。在将复杂功能分解为可操作步骤时使用这些模式。
 
-## When to Use
+## 何时使用
 
-- Starting a new feature or project
-- Making architectural changes
-- Planning complex refactoring
-- Breaking down large tasks into manageable pieces
-- Estimating effort and identifying risks
+- 开始新功能或项目
+- 进行架构变更
+- 规划复杂重构
+- 将大任务分解为可管理的部分
+- 估算工作量和识别风险
 
-## Planning Principles
+## 规划原则
 
-### 1. Start with Requirements
-- Understand what needs to be built before planning how
-- Clarify success criteria
-- Identify constraints and assumptions
+### 1. 从需求开始
+- 在规划如何构建之前理解需要构建什么
+- 明确成功标准
+- 识别约束和假设
 
-### 2. Think in Phases
-- Break work into independently deliverable chunks
-- Each phase should provide value on its own
-- Avoid all-or-nothing plans
+### 2. 分阶段思考
+- 将工作分解为可独立交付的块
+- 每个阶段都应该自己提供价值
+- 避免全有或全无的计划
 
-### 3. Be Specific
-- Use exact file paths and function names
-- Define clear inputs and outputs
-- Specify expected behavior
+### 3. 具体明确
+- 使用确切的文件路径和函数名
+- 定义清晰的输入和输出
+- 指定预期行为
 
-### 4. Consider Dependencies
-- Identify what must be done before what
-- Note external dependencies (APIs, services, teams)
-- Plan for integration points
+### 4. 考虑依赖关系
+- 识别什么必须在什么之前完成
+- 注意外部依赖（API、服务、团队）
+- 规划集成点
 
-## Plan Structure
+## 计划结构
 
-### Standard Template
+### 标准模板
 
 ```markdown
-# Implementation Plan: [Feature Name]
+# 实施计划: [功能名称]
 
-## Overview
-[2-3 sentence summary of what we're building and why]
+## 概述
+[2-3 句话总结我们要构建什么以及为什么]
 
-## Requirements Restatement
-- [Requirement 1]
-- [Requirement 2]
-- [Success criteria]
+## 需求重述
+- [需求 1]
+- [需求 2]
+- [成功标准]
 
-## Architecture Changes
-- [Change 1: file path and description]
-- [Change 2: file path and description]
+## 架构变更
+- [变更 1: 文件路径和描述]
+- [变更 2: 文件路径和描述]
 
-## Implementation Steps
+## 实施步骤
 
-### Phase 1: [Phase Name]
-1. **[Step Name]** (File: path/to/file.ts)
-   - Action: Specific action to take
-   - Why: Reason for this step
-   - Dependencies: None / Requires step X
-   - Risk: Low/Medium/High
+### 阶段 1: [阶段名称]
+1. **[步骤名称]** (文件: path/to/file.ts)
+   - 操作: 要采取的具体操作
+   - 原因: 此步骤的理由
+   - 依赖: 无 / 需要步骤 X
+   - 风险: 低/中/高
 
-### Phase 2: [Phase Name]
+### 阶段 2: [阶段名称]
 ...
 
-## Testing Strategy
-- Unit tests: [files to test]
-- Integration tests: [flows to test]
-- E2E tests: [user journeys to test]
+## 测试策略
+- 单元测试: [要测试的文件]
+- 集成测试: [要测试的流程]
+- E2E 测试: [要测试的用户旅程]
 
-## Risks & Mitigations
-- **Risk**: [Description]
-  - Mitigation: [How to address]
+## 风险与缓解
+- **风险**: [描述]
+  - 缓解: [如何解决]
 
-## Success Criteria
-- [ ] Criterion 1
-- [ ] Criterion 2
+## 成功标准
+- [ ] 标准 1
+- [ ] 标准 2
 ```
 
-## Phase Planning
+## 阶段规划
 
-### Phase Types
+### 阶段类型
 
-| Phase | Purpose | Example |
+| 阶段 | 目的 | 示例 |
 |-------|---------|---------|
-| **Foundation** | Set up infrastructure | Database schema, config, utilities |
-| **Core** | Implement main functionality | API endpoints, business logic |
-| **Integration** | Connect components | Wire up frontend to backend |
-| **Polish** | Error handling, edge cases | Validation, error messages |
-| **Optimize** | Performance, monitoring | Caching, logging, metrics |
+| **基础** | 设置基础设施 | 数据库架构、配置、工具 |
+| **核心** | 实现主要功能 | API 端点、业务逻辑 |
+| **集成** | 连接组件 | 前端与后端连接 |
+| **完善** | 错误处理、边界情况 | 验证、错误消息 |
+| **优化** | 性能、监控 | 缓存、日志、指标 |
 
-### Phase Sizing Guidelines
+### 阶段规模指南
 
-- **Small**: 1-2 files, < 2 hours
-- **Medium**: 3-5 files, 2-4 hours
-- **Large**: 6+ files, 4-8 hours (consider splitting)
+- **小**: 1-2 个文件, < 2 小时
+- **中**: 3-5 个文件, 2-4 小时
+- **大**: 6+ 个文件, 4-8 小时（考虑拆分）
 
-Each phase should be:
-- Independently reviewable
-- Testable in isolation
-- Mergeable without breaking main
+每个阶段应该是：
+- 可独立审查
+- 可隔离测试
+- 可合并不破坏主干
 
-## Risk Assessment
+## 风险评估
 
-### Common Risk Categories
+### 常见风险类别
 
-| Category | Examples | Mitigation |
+| 类别 | 示例 | 缓解 |
 |----------|----------|------------|
-| **Technical** | New technology, complex algorithm | Spike/prototype first |
-| **Integration** | Third-party APIs, external services | Mock interfaces early |
-| **Performance** | Large data volumes, real-time | Benchmark early, optimize later |
-| **Security** | Auth, sensitive data | Security review in each phase |
-| **Dependency** | Blocked on other teams/features | Parallel work, fallback plans |
+| **技术** | 新技术、复杂算法 | 先进行 spike/原型 |
+| **集成** | 第三方 API、外部服务 | 尽早 mock 接口 |
+| **性能** | 大数据量、实时 | 尽早基准测试，稍后优化 |
+| **安全** | 认证、敏感数据 | 每个阶段进行安全审查 |
+| **依赖** | 被其他团队/功能阻塞 | 并行工作、备用计划 |
 
-### Risk Register Template
+### 风险登记模板
 
 ```markdown
-## Risks & Mitigations
+## 风险与缓解
 
-| Risk | Likelihood | Impact | Mitigation |
+| 风险 | 可能性 | 影响 | 缓解 |
 |------|------------|--------|------------|
-| API rate limits | Medium | High | Implement caching, backoff |
-| Database migration fails | Low | High | Test on staging, backup first |
-| Performance with 10k users | Medium | Medium | Load test in Phase 2 |
+| API 速率限制 | 中 | 高 | 实施缓存、退避 |
+| 数据库迁移失败 | 低 | 高 | 在 staging 测试、先备份 |
+| 10k 用户的性能 | 中 | 中 | 在阶段 2 进行负载测试 |
 ```
 
-## Planning Checklist
+## 规划检查清单
 
-Before finalizing a plan, verify:
+在最终确定计划之前，验证：
 
-- [ ] All requirements are addressed
-- [ ] Each step has a clear file path
-- [ ] Dependencies are identified
-- [ ] Risks have mitigation strategies
-- [ ] Testing approach is defined
-- [ ] Phases can be delivered independently
-- [ ] Success criteria are measurable
-- [ ] Effort estimates are realistic
+- [ ] 所有需求都已解决
+- [ ] 每个步骤都有清晰的文件路径
+- [ ] 依赖关系已识别
+- [ ] 风险有缓解策略
+- [ ] 测试方法已定义
+- [ ] 阶段可以独立交付
+- [ ] 成功标准是可衡量的
+- [ ] 工作量估算是现实的
 
-## Example Plan
+## 示例计划
 
 ```markdown
-# Implementation Plan: Stripe Subscription Billing
+# 实施计划: Stripe 订阅计费
 
-## Overview
-Add subscription billing with free/pro/enterprise tiers. Users upgrade via
-Stripe Checkout, and webhook events keep subscription status in sync.
+## 概述
+添加具有免费/专业/企业层的订阅计费。用户通过
+Stripe Checkout 升级，webhook 事件保持订阅状态同步。
 
-## Requirements
-- Three tiers: Free (default), Pro ($29/mo), Enterprise ($99/mo)
-- Stripe Checkout for payment flow
-- Webhook handler for subscription lifecycle events
-- Feature gating based on subscription tier
+## 需求
+- 三层: 免费（默认）、专业版 ($29/月)、企业版 ($99/月)
+- Stripe Checkout 用于支付流程
+- Webhook 处理程序用于订阅生命周期事件
+- 基于订阅层的功能门控
 
-## Architecture Changes
-- New table: `subscriptions` (user_id, stripe_customer_id, stripe_subscription_id, status, tier)
-- New API route: `app/api/checkout/route.ts`
-- New API route: `app/api/webhooks/stripe/route.ts`
-- New middleware: check subscription tier
-- New component: `PricingTable`
+## 架构变更
+- 新表: `subscriptions` (user_id, stripe_customer_id, stripe_subscription_id, status, tier)
+- 新 API 路由: `app/api/checkout/route.ts`
+- 新 API 路由: `app/api/webhooks/stripe/route.ts`
+- 新中间件: 检查订阅层
+- 新组件: `PricingTable`
 
-## Implementation Steps
+## 实施步骤
 
-### Phase 1: Database & Backend
-1. **Create subscription migration**
-   - File: `supabase/migrations/004_subscriptions.sql`
-   - Dependencies: None
-   - Risk: Low
+### 阶段 1: 数据库与后端
+1. **创建订阅迁移**
+   - 文件: `supabase/migrations/004_subscriptions.sql`
+   - 依赖: 无
+   - 风险: 低
 
-2. **Create Stripe webhook handler**
-   - File: `src/app/api/webhooks/stripe/route.ts`
-   - Dependencies: Step 1
-   - Risk: High — verify signature
+2. **创建 Stripe webhook 处理程序**
+   - 文件: `src/app/api/webhooks/stripe/route.ts`
+   - 依赖: 步骤 1
+   - 风险: 高 — 验证签名
 
-### Phase 2: Checkout Flow
-3. **Create checkout API route**
-   - File: `src/app/api/checkout/route.ts`
-   - Dependencies: Step 1
-   - Risk: Medium
+### 阶段 2: 结账流程
+3. **创建结账 API 路由**
+   - 文件: `src/app/api/checkout/route.ts`
+   - 依赖: 步骤 1
+   - 风险: 中
 
-4. **Build pricing page**
-   - File: `src/components/PricingTable.tsx`
-   - Dependencies: Step 3
-   - Risk: Low
+4. **构建定价页面**
+   - 文件: `src/components/PricingTable.tsx`
+   - 依赖: 步骤 3
+   - 风险: 低
 
-## Testing Strategy
-- Unit: Webhook parsing, tier checking
-- Integration: Checkout session, webhook processing
-- E2E: Full upgrade flow
+## 测试策略
+- 单元: Webhook 解析、层检查
+- 集成: 结账会话、webhook 处理
+- E2E: 完整升级流程
 
-## Risks & Mitigations
-- **Risk**: Webhook events arrive out of order
-  - Mitigation: Use timestamps, idempotent updates
+## 风险与缓解
+- **风险**: Webhook 事件乱序到达
+  - 缓解: 使用时间戳、幂等更新
 
-## Success Criteria
-- [ ] User can upgrade via Stripe Checkout
-- [ ] Webhook syncs status correctly
-- [ ] Free users blocked from Pro features
-- [ ] 80%+ test coverage
+## 成功标准
+- [ ] 用户可以通过 Stripe Checkout 升级
+- [ ] Webhook 正确同步状态
+- [ ] 免费用户被阻止访问专业功能
+- [ ] 80%+ 测试覆盖率
 ```
 
-## Related Resources
+## 相关资源
 
-- `/plan` command — Create implementation plan
-- `/req` command — Gather requirements first
-- `/tdd` command — Execute plan with tests
+- `/plan` 命令 — 创建实施计划
+- `/req` 命令 — 首先收集需求
+- `/tdd` 命令 — 用测试执行计划

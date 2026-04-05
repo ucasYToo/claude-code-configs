@@ -1,427 +1,426 @@
-# Requirement Workflow
+# 需求工作流
 
-Reusable patterns and techniques for effective requirements engineering. Use these patterns when eliciting, analyzing, and documenting product requirements.
+有效需求工程的可复用模式和技术。在引出、分析和记录产品需求时使用这些模式。
 
-## When to Use
+## 何时使用
 
-- Starting a new project or feature
-- Requirements feel vague or incomplete
-- Stakeholders have conflicting understandings
-- Need to validate scope before committing resources
-- Transitioning from discovery to implementation
-- Need to understand existing solutions before designing new ones
+- 开始新项目或功能
+- 需求感觉模糊或不完整
+- 利益相关者有冲突的理解
+- 在投入资源之前需要验证范围
+- 从发现过渡到实施
+- 在设计新方案之前需要了解现有解决方案
 
-## Requirements Elicitation Techniques
+## 需求引出技术
 
-### The 5 Ws Framework
+### 5W 框架
 
-| Question | Purpose | Example Answers |
+| 问题 | 目的 | 示例答案 |
 |----------|---------|-----------------|
-| **Who** | Identify users/personas | "Admin users", "Mobile customers", "API integrators" |
-| **What** | Define functionality | "Export reports", "Reset password", "Sync data" |
-| **Why** | Understand motivation | "Compliance requirement", "Reduce churn", "Competitor parity" |
-| **When** | Set timeline/milestones | "End of quarter", "Before Black Friday", "ASAP" |
-| **Constraints** | Surface limitations | "Must use existing auth", "$10K budget", "GDPR compliant" |
+| **谁** | 识别用户/角色 | "管理员用户"、"移动客户"、"API 集成商" |
+| **什么** | 定义功能 | "导出报告"、"重置密码"、"同步数据" |
+| **为什么** | 理解动机 | "合规要求"、"减少流失"、"与竞争对手持平" |
+| **何时** | 设定时间线/里程碑 | "季度末"、"黑色星期五前"、"尽快" |
+| **约束** | 暴露限制 | "必须使用现有认证"、"$10K 预算"、"GDPR 合规" |
 
-### Progressive Disclosure
+### 渐进式披露
 
-Don't overwhelm users with questions. Start small, offer depth:
+不要用问题压倒用户。从小处开始，提供深度：
 
-1. **Phase 1: Core** (Always) - 3 essential questions
-2. **Phase 2: Extended** (Offer) - Timeline, constraints, scope
-3. **Phase 3: Edge Cases** (Deep dive) - Error scenarios, limits
+1. **阶段 1：核心**（始终）- 3 个基本问题
+2. **阶段 2：扩展**（提供）- 时间线、约束、范围
+3. **阶段 3：边界情况**（深入）- 错误场景、限制
 
-### Active Listening Patterns
+### 积极倾听模式
 
-When a user states a requirement, probe deeper:
+当用户陈述需求时，深入探究：
 
-| User Says | Probe With | Goal |
+| 用户说 | 用...探究 | 目标 |
 |-----------|------------|------|
-| "Make it fast" | "What's the target response time?" | Get specific metrics |
-| "Users should be able to..." | "Which users specifically?" | Identify personas |
-| "Support all browsers" | "Any specific versions we must support?" | Define scope |
-| "Easy to use" | "What tasks should be doable in < 3 clicks?" | Operationalize UX |
+| "让它快" | "目标响应时间是多少？" | 获取具体指标 |
+| "用户应该能够..." | "具体是哪些用户？" | 识别角色 |
+| "支持所有浏览器" | "有什么特定版本必须支持吗？" | 定义范围 |
+| "易于使用" | "什么任务应该在 < 3 次点击内完成？" | 使 UX 可操作化 |
 
-## Research Phase
+## 研究阶段
 
-Research during requirements gathering is crucial for informed decision-making.
+需求收集期间的研究对于做出明智的决策至关重要。
 
-### Research Objectives
+### 研究目标
 
-1. **Discover existing solutions** — What similar features exist in your codebase?
-2. **Identify patterns** — What are common approaches for this type of feature?
-3. **Evaluate technologies** — What libraries, tools, or services should be considered?
-4. **Understand constraints** — What technical or business limitations exist?
-5. **Learn from others** — What are industry best practices and common pitfalls?
+1. **发现现有解决方案** — 您的代码库中有哪些类似功能？
+2. **识别模式** — 对于这种类型的功能，常见的方法是什么？
+3. **评估技术** — 应该考虑哪些库、工具或服务？
+4. **理解约束** — 存在什么技术或业务限制？
+5. **向他人学习** — 行业最佳实践和常见陷阱是什么？
 
-### Research Methods
+### 研究方法
 
-| Method | Tools | When to Use |
+| 方法 | 工具 | 何时使用 |
 |--------|-------|-------------|
-| **Codebase Exploration** | `Read`, `Grep`, `Glob` | Finding existing implementations |
-| **Documentation Review** | Web fetch, README files | Understanding APIs and libraries |
-| **Competitive Analysis** | Web search | Learning from similar products |
-| **Pattern Research** | GitHub search, blogs | Finding proven approaches |
+| **代码库探索** | `Read`, `Grep`, `Glob` | 查找现有实现 |
+| **文档审查** | Web fetch, README 文件 | 理解 API 和库 |
+| **竞争分析** | Web 搜索 | 从类似产品学习 |
+| **模式研究** | GitHub 搜索、博客 | 查找经过验证的方法 |
 
-### Research Checklist
+### 研究检查清单
 
-Before finalizing requirements, research:
+在最终确定需求之前，研究：
 
-- [ ] **Existing Codebase** — Are there similar features already implemented?
-- [ ] **Patterns** — What architectural patterns fit this feature?
-- [ ] **Libraries** — Are there battle-tested libraries we should use?
-- [ ] **Integration Points** — What systems will this feature interact with?
-- [ ] **Performance** — What are typical performance benchmarks for this type of feature?
-- [ ] **Security** — Are there known security considerations?
-- [ ] **Compliance** — Any regulatory requirements (GDPR, HIPAA, etc.)?
+- [ ] **现有代码库** — 是否已经实现了类似功能？
+- [ ] **模式** — 什么架构模式适合此功能？
+- [ ] **库** — 有什么我们应该使用的经过实战检验的库？
+- [ ] **集成点** — 此功能将与哪些系统交互？
+- [ ] **性能** — 这种类型的功能的典型性能基准是什么？
+- [ ] **安全** — 有什么已知的安全考虑？
+- [ ] **合规** — 任何监管要求（GDPR、HIPAA 等）？
 
-### Documenting Research Findings
+### 记录研究发现
 
-Include in your PRD:
+在您的 PRD 中包含：
 
 ```markdown
-## 2. Research Findings
+## 2. 研究发现
 
-### 2.1 Existing Solutions
-- **Current codebase**: Found auth system in `src/auth/` using JWT tokens
-- **Similar products**: Competitor X uses session-based auth, Competitor Y uses OAuth only
-- **Lessons learned**: Existing implementation lacks refresh token rotation
+### 2.1 现有解决方案
+- **当前代码库**：在 `src/auth/` 中使用 JWT 令牌找到认证系统
+- **类似产品**：竞争对手 X 使用基于会话的认证，竞争对手 Y 仅使用 OAuth
+- **经验教训**：现有实现缺少刷新令牌轮换
 
-### 2.2 Technical Landscape
-- **Options considered**:
-  - Auth0: $$$ but full-featured
-  - NextAuth.js: Free, good for Next.js
-  - Custom JWT: More control, more maintenance
-- **Recommended approach**: NextAuth.js for faster delivery
+### 2.2 技术环境
+- **考虑的选项**：
+  - Auth0: $$$ 但功能齐全
+  - NextAuth.js：免费，适合 Next.js
+  - 自定义 JWT：更多控制，更多维护
+- **推荐方法**：NextAuth.js 用于更快的交付
 
-### 2.3 Further Research Needed
-- [ ] Evaluate NextAuth.js vs custom solution with security team
-- [ ] Confirm OAuth provider requirements with product team
-- [ ] Research rate limiting strategies for auth endpoints
+### 2.3 需要进一步研究
+- [ ] 与安全团队评估 NextAuth.js 与自定义解决方案
+- [ ] 与产品团队确认 OAuth 提供商要求
+- [ ] 研究认证端点的速率限制策略
 ```
 
-## User Story Templates
+## 用户故事模板
 
-### Standard Format
+### 标准格式
 ```
-As a [user type], I want [goal], so that [benefit].
-```
-
-### With Acceptance Criteria
-```
-As a [user type], I want [goal], so that [benefit].
-
-**Acceptance Criteria:**
-- [ ] Criterion 1 (given/when/then or specific condition)
-- [ ] Criterion 2
-- [ ] Criterion 3
-
-**Priority:** Must-have / Should-have / Nice-to-have
-**Estimate:** Small / Medium / Large
+作为一个 [用户类型]，我想要 [目标]，以便 [收益]。
 ```
 
-### Common User Story Patterns
+### 带验收标准
+```
+作为一个 [用户类型]，我想要 [目标]，以便 [收益]。
 
-| Pattern | Example |
+**验收标准：**
+- [ ] 标准 1（given/when/then 或特定条件）
+- [ ] 标准 2
+- [ ] 标准 3
+
+**优先级：** 必须有 / 应该有 / 可以有
+**估算：** 小 / 中 / 大
+```
+
+### 常见用户故事模式
+
+| 模式 | 示例 |
 |---------|---------|
-| **Authentication** | As a user, I want to log in with my email, so that I can access my account securely. |
-| **Data Entry** | As an admin, I want to bulk upload users via CSV, so that I don't have to add them one by one. |
-| **Notification** | As a customer, I want to receive email alerts when my order ships, so that I know when to expect delivery. |
-| **Reporting** | As a manager, I want to see daily sales reports, so that I can track team performance. |
-| **Integration** | As a developer, I want REST API access, so that I can integrate with our internal tools. |
+| **认证** | 作为一个用户，我想要用我的邮箱登录，以便我可以安全地访问我的账户。 |
+| **数据输入** | 作为一个管理员，我想要通过 CSV 批量上传用户，以便我不必一个一个添加他们。 |
+| **通知** | 作为一个客户，我想要在订单发货时接收邮件提醒，以便我知道何时可以收货。 |
+| **报告** | 作为一个经理，我想要查看每日销售报告，以便我可以跟踪团队绩效。 |
+| **集成** | 作为一个开发者，我想要 REST API 访问，以便我可以与我们的内部工具集成。 |
 
-## Acceptance Criteria Patterns
+## 验收标准模式
 
-### Given/When/Then (BDD Style)
+### Given/When/Then（BDD 风格）
 ```
-Given [precondition]
-When [action]
-Then [expected result]
-```
-
-Example:
-```
-Given a user is on the login page
-When they enter valid credentials
-Then they are redirected to the dashboard
-And their session token is stored
+Given [前置条件]
+When [操作]
+Then [预期结果]
 ```
 
-### Checklist Style
+示例：
 ```
-- [ ] User can enter email and password
-- [ ] System validates credentials against database
-- [ ] Invalid credentials show error message "Invalid email or password"
-- [ ] Successful login redirects to /dashboard
-- [ ] Session expires after 24 hours of inactivity
-```
-
-### Constraint Style
-```
-- [ ] Response time < 200ms for 95th percentile
-- [ ] Supports 10,000 concurrent users
-- [ ] Works on Chrome, Firefox, Safari (last 2 versions)
-- [ ] Complies with WCAG 2.1 AA accessibility standards
+Given 用户在登录页面
+When 他们输入有效凭证
+Then 他们被重定向到仪表板
+And 他们的会话令牌被存储
 ```
 
-## Constraint Categorization
+### 检查清单风格
+```
+- [ ] 用户可以输入邮箱和密码
+- [ ] 系统根据数据库验证凭证
+- [ ] 无效凭证显示错误消息 "邮箱或密码无效"
+- [ ] 成功登录重定向到 /dashboard
+- [ ] 会话在 24 小时不活动后过期
+```
 
-### Technical Constraints
-| Category | Examples |
+### 约束风格
+```
+- [ ] 第 95 百分位响应时间 < 200ms
+- [ ] 支持 10,000 并发用户
+- [ ] 适用于 Chrome、Firefox、Safari（最近 2 个版本）
+- [ ] 符合 WCAG 2.1 AA 可访问性标准
+```
+
+## 约束分类
+
+### 技术约束
+| 类别 | 示例 |
 |----------|----------|
-| **Platform** | "Must run on iOS 14+", "Serverless architecture only" |
-| **Integration** | "Must use existing Salesforce connection", "Stripe for payments" |
-| **Performance** | "Page load < 3s", "API latency < 100ms" |
-| **Security** | "SOC2 compliant", "Data must stay in EU" |
+| **平台** | "必须在 iOS 14+ 上运行"、"仅限无服务器架构" |
+| **集成** | "必须使用现有的 Salesforce 连接"、"使用 Stripe 支付" |
+| **性能** | "页面加载 < 3s"、"API 延迟 < 100ms" |
+| **安全** | "符合 SOC2"、"数据必须留在欧盟" |
 
-### Business Constraints
-| Category | Examples |
+### 业务约束
+| 类别 | 示例 |
 |----------|----------|
-| **Budget** | "$50K max", "Use existing licenses" |
-| **Timeline** | "Before holiday season", "End of quarter" |
-| **Resources** | "Only 2 developers available", "No design support" |
-| **Compliance** | "GDPR compliant", "HIPAA required" |
+| **预算** | "最多 $50K"、"使用现有许可证" |
+| **时间线** | "在假期季节前"、"季度末" |
+| **资源** | "只有 2 个开发者可用"、"没有设计支持" |
+| **合规** | "符合 GDPR"、"需要 HIPAA" |
 
-### User Constraints
-| Category | Examples |
+### 用户约束
+| 类别 | 示例 |
 |----------|----------|
-| **Accessibility** | "WCAG 2.1 AA", "Screen reader compatible" |
-| **Localization** | "Support 12 languages", "RTL layouts" |
-| **Device** | "Works on 320px width", "Touch-friendly" |
+| **可访问性** | "WCAG 2.1 AA"、"兼容屏幕阅读器" |
+| **本地化** | "支持 12 种语言"、"RTL 布局" |
+| **设备** | "在 320px 宽度上工作"、"触摸友好" |
 
-## PRD Templates
+## PRD 模板
 
-### Full PRD Template
+### 完整 PRD 模板
 ```markdown
-# PRD: [Feature Name]
+# PRD: [功能名称]
 
-## 1. Overview
-[2-3 sentence summary of what we're building and why]
+## 1. 概述
+[2-3 句话总结我们要构建什么以及为什么]
 
-## 2. Research Findings (Optional but Recommended)
-### 2.1 Existing Solutions
-- [What similar solutions exist?]
-- [What can we learn from them?]
+## 2. 研究发现（推荐但可选）
+### 2.1 现有解决方案
+- [存在什么类似解决方案？]
+- [我们可以从它们学到什么？]
 
-### 2.2 Technical Landscape
-- [Relevant technologies, libraries, patterns]
-- [Known limitations or trade-offs]
+### 2.2 技术环境
+- [相关技术、库、模式]
+- [已知限制或权衡]
 
-### 2.3 Further Research Needed
-- [ ] Research topic 1 (why needed, who should do it)
-- [ ] Research topic 2
+### 2.3 需要进一步研究
+- [ ] 研究主题 1（为什么需要、谁应该做）
+- [ ] 研究主题 2
 
-## 3. Goals & Success Criteria
-- **Goal 1**: [description]
-- **Goal 2**: [description]
-- **Success Metrics**: [quantitative measures]
+## 3. 目标与成功标准
+- **目标 1**: [描述]
+- **目标 2**: [描述]
+- **成功指标**: [定量指标]
 
-## 4. User Stories
-### Story 1: [Name]
-As a [user type], I want [goal], so that [benefit].
+## 4. 用户故事
+### 故事 1: [名称]
+作为一个 [用户类型]，我想要 [目标]，以便 [收益]。
 
-**Acceptance Criteria:**
-- [ ] Criterion 1
-- [ ] Criterion 2
+**验收标准：**
+- [ ] 标准 1
+- [ ] 标准 2
 
-**Priority:** [Must/Should/Could]
+**优先级:** [必须有/应该有/可以有]
 
-### Story 2: [Name]
+### 故事 2: [名称]
 ...
 
-## 5. Functional Requirements
-- FR1: [Specific, testable requirement]
-- FR2: [Specific, testable requirement]
+## 5. 功能需求
+- FR1: [具体、可测试的需求]
+- FR2: [具体、可测试的需求]
 
-## 6. Non-Functional Requirements
-- **Performance**: [requirements]
-- **Security**: [requirements]
-- **Reliability**: [requirements]
-- **UX**: [requirements]
+## 6. 非功能需求
+- **性能**: [需求]
+- **安全**: [需求]
+- **可靠性**: [需求]
+- **UX**: [需求]
 
-## 7. Constraints & Assumptions
-### Constraints
-- [limitation 1]
-- [limitation 2]
+## 7. 约束与假设
+### 约束
+- [限制 1]
+- [限制 2]
 
-### Assumptions
-- [assumption 1]
-- [assumption 2]
+### 假设
+- [假设 1]
+- [假设 2]
 
-## 8. Open Questions
-- [Question 1] — [who will answer / by when]
+## 8. 未决问题
+- [问题 1] — [谁将回答 / 何时]
 
-## 9. Suggested Next Step
-- `/plan` — Create implementation plan
-- `/tdd` — Start test-driven development
+## 9. 建议下一步
+- `/plan` — 创建实施计划
+- `/tdd` — 开始测试驱动开发
 ```
 
-### Quick PRD Template (Simple Features)
+### 快速 PRD 模板（简单功能）
 ```markdown
-# PRD: [Feature Name]
+# PRD: [功能名称]
 
-## Overview
-[1-2 sentences]
+## 概述
+[1-2 句话]
 
-## Requirements
-- [ ] Requirement 1
-- [ ] Requirement 2
-- [ ] Requirement 3
+## 需求
+- [ ] 需求 1
+- [ ] 需求 2
+- [ ] 需求 3
 
-## Acceptance Criteria
-- [ ] Criterion 1
-- [ ] Criterion 2
+## 验收标准
+- [ ] 标准 1
+- [ ] 标准 2
 
-## Next Step
-- `/plan` or `/tdd`
+## 下一步
+- `/plan` 或 `/tdd`
 ```
 
-## Red Flags Checklist
+## 红旗检查清单
 
-Watch for these warning signs during requirements gathering:
+在需求收集期间注意这些警告信号：
 
-- [ ] Vague terms: "user-friendly", "fast", "easy", "intuitive"
-- [ ] No success metrics defined
-- [ ] Missing user context (who is this for?)
-- [ ] Unstated assumptions
-- [ ] Scope creep indicators ("and also...", "what if we added...")
-- [ ] Conflicting requirements
-- [ ] No timeline or milestones
-- [ ] Missing error scenarios
-- [ ] No constraints identified
-- [ ] Solution disguised as requirement ("Use React for the frontend")
+- [ ] 模糊术语："用户友好"、"快"、"简单"、"直观"
+- [ ] 没有定义成功指标
+- [ ] 缺少用户上下文（这是给谁用的？）
+- [ ] 未说明的假设
+- [ ] 范围蔓延指标（"还有..."、"如果我们添加..."）
+- [ ] 冲突的需求
+- [ ] 没有时间线或里程碑
+- [ ] 缺少错误场景
+- [ ] 没有识别约束
+- [ ] 解决方案伪装成需求（"前端使用 React"）
 
-## Quality Checklist
+## 质量检查清单
 
-Before finalizing a PRD, verify:
+在最终确定 PRD 之前，验证：
 
-### Content Quality
-- [ ] Every requirement is specific and unambiguous
-- [ ] Every user story has clear acceptance criteria
-- [ ] Success criteria are measurable
-- [ ] Constraints are documented
-- [ ] Edge cases are considered
-- [ ] Priority is assigned to each story
-- [ ] Dependencies are identified
-- [ ] Open questions have owners
+### 内容质量
+- [ ] 每个需求都是具体且明确的
+- [ ] 每个用户故事都有清晰的验收标准
+- [ ] 成功标准是可衡量的
+- [ ] 约束已记录
+- [ ] 考虑了边界情况
+- [ ] 为每个故事分配了优先级
+- [ ] 识别了依赖关系
+- [ ] 未决问题有负责人
 
-### Research Quality
-- [ ] Existing codebase explored for similar features
-- [ ] Industry patterns and best practices considered
-- [ ] Technical options evaluated with trade-offs
-- [ ] Further research topics identified if needed
-- [ ] Stakeholders have reviewed and agreed
+### 研究质量
+- [ ] 探索了现有代码库以查找类似功能
+- [ ] 考虑了行业模式和最佳实践
+- [ ] 评估了技术选项及权衡
+- [ ] 如果需要，识别了进一步研究的主题
+- [ ] 利益相关者已审查并同意
 
-## Examples
+## 示例
 
-### Example 1: Authentication System
-
-```markdown
-# PRD: User Authentication
-
-## 1. Overview
-Implement secure email/password authentication with optional social login
-to replace the current insecure system flagged by security audit.
-
-## 2. Research Findings
-
-### 2.1 Existing Solutions
-- **Current system**: Basic session-based auth in `src/auth/`, lacks rate limiting
-- **Industry standard**: JWT with refresh token rotation
-- **Competitor analysis**: Most use OAuth-first with email/password fallback
-
-### 2.2 Technical Landscape
-- **Options evaluated**:
-  - Auth0: Enterprise-grade, $$$, quick to implement
-  - NextAuth.js: Free, Next.js native, good community
-  - Custom JWT: Full control, higher maintenance burden
-- **Recommended**: NextAuth.js for balance of speed and flexibility
-
-### 2.3 Further Research Needed
-- [ ] Confirm OAuth providers with product team (Google? GitHub? Others?)
-- [ ] Review security team's requirements for token expiration
-- [ ] Evaluate need for MFA/2FA
-
-## 3. Goals
-- Pass security audit requirements
-- Reduce account takeover incidents by 90%
-- Maintain < 200ms login response time
-
-## 4. User Stories
-### Story 1: Email/Password Registration
-As a new customer, I want to register with email and password, so that I
-can create an account without third-party dependencies.
-
-**Acceptance Criteria:**
-- [ ] Email must be valid format (RFC 5322)
-- [ ] Password minimum 12 characters
-- [ ] Password must include uppercase, lowercase, number, symbol
-- [ ] Duplicate emails rejected with "Account already exists"
-- [ ] Verification email sent within 30 seconds
-- [ ] Account inactive until email verified
-
-**Priority:** Must-have
-
-### Story 2: Social Login
-As a customer, I want to sign in with my Google account, so that I don't
-need to remember another password.
-
-**Acceptance Criteria:**
-- [ ] Google OAuth 2.0 integration
-- [ ] New accounts created automatically on first login
-- [ ] Existing accounts can link Google auth
-- [ ] Unlink option in account settings
-
-**Priority:** Should-have
-
-## 5. Constraints
-- Must integrate with existing user database
-- Passwords must be hashed with bcrypt (cost factor 12)
-- GDPR compliant data handling
-- $5K budget for auth service
-```
-
-### Example 2: Simple Feature
+### 示例 1: 认证系统
 
 ```markdown
-# PRD: Dark Mode Toggle
+# PRD: 用户认证
 
-## Overview
-Add dark mode toggle in user settings with system preference detection
-and instant theme switching.
+## 1. 概述
+实现安全的邮箱/密码认证，可选社交登录
+以替换安全审计标记的当前不安全系统。
 
-## Research Findings
-- **Existing**: No current theming system in codebase
-- **Patterns**: CSS variables + data attribute approach is standard
-- **Libraries**: Tailwind CSS has built-in dark mode support (we already use Tailwind)
-- **Implementation**: Use `darkMode: 'class'` in Tailwind config
+## 2. 研究发现
 
-## Requirements
-- [ ] Toggle in /settings/appearance page
-- [ ] Respect system `prefers-color-scheme` by default
-- [ ] Persist user choice in localStorage
-- [ ] Apply theme without page reload
-- [ ] Smooth transition between themes (300ms)
+### 2.1 现有解决方案
+- **当前系统**: `src/auth/` 中的基本基于会话的认证，缺少速率限制
+- **行业标准**: 带刷新令牌轮换的 JWT
+- **竞争分析**: 大多数使用 OAuth 优先，邮箱/密码回退
 
-## Acceptance Criteria
-- [ ] Toggle switches between light/dark/system options
-- [ ] User choice persists across sessions
-- [ ] No flash of wrong theme on page load
-- [ ] Works on Chrome, Firefox, Safari (latest 2 versions)
-- [ ] Passes WCAG contrast requirements in both themes
+### 2.2 技术环境
+- **评估的选项**：
+  - Auth0: 企业级，$$$，快速实施
+  - NextAuth.js: 免费，Next.js 原生，良好的社区
+  - 自定义 JWT: 完全控制，更高的维护负担
+- **推荐**: NextAuth.js 用于速度和灵活性的平衡
 
-## Next Step
-- `/tdd` — Start with theme context tests
+### 2.3 需要进一步研究
+- [ ] 与产品团队确认 OAuth 提供商（Google？GitHub？其他？）
+- [ ] 审查安全团队的令牌过期要求
+- [ ] 评估 MFA/2FA 的需求
+
+## 3. 目标
+- 通过安全审计要求
+- 将账户接管事件减少 90%
+- 保持登录响应时间 < 200ms
+
+## 4. 用户故事
+### 故事 1: 邮箱/密码注册
+作为一个新客户，我想要用邮箱和密码注册，以便
+我可以在没有第三方依赖的情况下创建账户。
+
+**验收标准：**
+- [ ] 邮箱必须是有效格式（RFC 5322）
+- [ ] 密码最少 12 个字符
+- [ ] 密码必须包含大写、小写、数字、符号
+- [ ] 重复邮箱被拒绝并显示 "账户已存在"
+- [ ] 验证邮件在 30 秒内发送
+- [ ] 账户在邮箱验证前处于非活动状态
+
+**优先级:** 必须有
+
+### 故事 2: 社交登录
+作为一个客户，我想要用我的 Google 账户登录，以便我不需要记住另一个密码。
+
+**验收标准：**
+- [ ] Google OAuth 2.0 集成
+- [ ] 新账户在首次登录时自动创建
+- [ ] 现有账户可以关联 Google 认证
+- [ ] 账户设置中的取消关联选项
+
+**优先级:** 应该有
+
+## 5. 约束
+- 必须与现有用户数据库集成
+- 密码必须使用 bcrypt 哈希（成本因子 12）
+- GDPR 合规的数据处理
+- 认证服务预算 $5K
 ```
 
-## Related Resources
+### 示例 2: 简单功能
 
-- `/req` command — Invoke requirements analysis
-- `/plan` command — Create implementation plan from PRD
-- `/tdd` command — Start development with tests
+```markdown
+# PRD: 深色模式切换
 
-## References
+## 概述
+在用户设置中添加深色模式切换，具有系统偏好检测
+和即时主题切换。
 
-- [INVEST criteria](https://www.agilealliance.org/glossary/invest/) for user stories
-- [Given/When/Then pattern](https://martinfowler.com/bliki/GivenWhenThen.html)
-- [Google Docs PRD Template](https://www.productplan.com/glossary/product-requirements-document/)
+## 研究发现
+- **现有**: 代码库中没有当前主题系统
+- **模式**: CSS 变量 + data 属性方法是标准
+- **库**: Tailwind CSS 有内置的深色模式支持（我们已经在使用 Tailwind）
+- **实施**: 在 Tailwind 配置中使用 `darkMode: 'class'`
+
+## 需求
+- [ ] /settings/appearance 页面中的切换
+- [ ] 默认尊重系统 `prefers-color-scheme`
+- [ ] 在 localStorage 中持久化用户选择
+- [ ] 无需页面重新加载即可应用主题
+- [ ] 主题之间平滑过渡（300ms）
+
+## 验收标准
+- [ ] 切换在亮色/暗色/系统选项之间切换
+- [ ] 用户选择在会话之间持久化
+- [ ] 页面加载时没有错误主题的闪烁
+- [ ] 适用于 Chrome、Firefox、Safari（最近 2 个版本）
+- [ ] 通过两种主题的 WCAG 对比度要求
+
+## 下一步
+- `/tdd` — 从主题上下文测试开始
+```
+
+## 相关资源
+
+- `/req` 命令 — 调用需求分析
+- `/plan` 命令 — 从 PRD 创建实施计划
+- `/tdd` 命令 — 开始开发
+
+## 参考
+
+- [INVEST 标准](https://www.agilealliance.org/glossary/invest/) 用于用户故事
+- [Given/When/Then 模式](https://martinfowler.com/bliki/GivenWhenThen.html)
+- [Google Docs PRD 模板](https://www.productplan.com/glossary/product-requirements-document/)
