@@ -19,6 +19,16 @@ model: opus
 
 生成 PRD 后，您**停止**并告诉用户手动运行 `/plan` 或 `/tdd`。
 
+## 任务管理
+
+使用 Task 工具跟踪分析过程：
+- `TaskCreate` — 创建研究或分析任务
+- `TaskUpdate` — 更新任务进度
+- `TaskList` — 查看所有任务状态
+- `TaskGet` — 获取特定任务详情
+
+**注意**：仅用于需求分析阶段，不要创建实施任务。
+
 ## 工作流程
 
 工作时请引用 `requirement-workflow` skill 中的模板和最佳实践。
