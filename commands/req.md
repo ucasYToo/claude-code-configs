@@ -1,52 +1,57 @@
 ---
-description: Clarify and document requirements before coding. Transforms vague ideas into structured PRDs. DOES NOT execute - only generates documentation.
+description: 需求澄清与文档化。将模糊想法转化为结构化 PRD。只输出 PRD 不执行。
 ---
 
-# Req Command
+# Req 命令
 
-Transforms vague feature ideas into clear, structured Product Requirements Documents (PRDs). **This command ONLY generates documentation and NEVER executes code or plans.**
+将模糊的功能想法转化为清晰、结构化的产品需求文档（PRD）。**此命令只生成 PRD 文档，从不执行代码或规划。**
 
-## ⚠️ Important
+> **调用**：此命令自动调用 `requirement-analyst` agent。
 
-**`/req` only generates PRD documents. It does NOT:**
-- Create implementation plans (use `/plan` for that)
-- Write any code (use `/tdd` for that)
-- Execute any actions
+## ⚠️ 重要说明
 
-After `/req` completes, you must **manually** run `/plan` to continue.
+**`/req` 只生成 PRD 文档，绝不执行：**
+- 不创建实现规划（使用 `/plan`）
+- 不编写代码（使用 `/tdd`）
+- 不执行任何操作
 
-## What This Command Does
+**`/req` 完成后，你可以选择：**
+1. 运行 `/plan` —— 基于 PRD 创建详细实施计划
+2. 运行 `/tdd` —— 直接进入测试驱动开发
+3. 直接告诉我 —— "根据 PRD 执行"，我将立即开始实现
+4. 继续讨论需求 —— 修改 PRD 或补充需求
 
-1. **Clarifies Requirements** - Guides you through structured questioning
-2. **Conducts Research** - Investigates existing codebase, patterns, and solutions
-3. **Structures Thinking** - Breaks down high-level needs into specific features
-4. **Documents PRD** - Generates standardized Google Docs style PRD with research findings
+## 此命令的功能
 
-## When to Use
+1. **澄清需求** - 通过结构化问题引导你
+2. **调研分析** - 调研现有代码库、模式和解决方案
+3. **结构化思考** - 将高层需求分解为具体功能
+4. **生成 PRD** - 生成标准化的 PRD 文档
 
-Use `/req` when:
-- You have a vague idea but aren't sure of the specifics
-- Requirements exist only in your head
-- Stakeholders have conflicting understandings
-- You need to validate scope before estimating effort
-- Preparing documentation for team alignment
+## 使用时机
 
-**Skip `/req`** and go directly to `/plan` if:
-- Requirements are already well-documented
-- This is a simple bug fix or one-line change
-- You've already discussed details with stakeholders
+使用 `/req`：
+- 想法模糊但不确定具体细节
+- 需求只存在于脑海中
+- 需要验证范围后再评估工作量
+- 准备文档以便团队对齐
 
-## Workflow
+**跳过 `/req`**，直接使用 `/plan`：
+- 需求已充分文档化
+- 简单的 bug 修复或单行改动
+- 已与相关方讨论过细节
+
+## 工作流程
 
 ```
-User: /req I need to add user authentication
+用户: /req 添加用户认证功能
 
-Agent: Great! Let's clarify your requirements...
-[Questions and research]
+Agent: 好的！让我们澄清需求...
+[提问和调研]
 
-Agent: Here's your PRD:
+Agent: 这是你的 PRD：
 
-# PRD: User Authentication System
+# PRD：用户认证系统
 ...
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -54,12 +59,14 @@ Agent: Here's your PRD:
 
 📄 已保存至：.claude/reqs/20250406-user-auth-system.md
 
-下一步（请手动执行）：
-→ 运行 /plan 创建实现规划
-→ 或修改需求后继续
+请选择下一步：
+→ 运行 `/plan` —— 创建详细实施计划
+→ 运行 `/tdd` —— 直接进入测试驱动开发
+→ 直接说 "根据 PRD 执行" —— 我立即开始实现
+→ 或继续讨论需求 —— 修改 PRD 或补充需求
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-[AGENT STOPS HERE - No automatic execution]
+[Agent 在此停止 - 不自动执行]
 ```
 
 ## PRD 自动保存
@@ -78,147 +85,174 @@ Agent: Here's your PRD:
 - 便于后续查阅和管理
 - 与代码变更历史对应
 
-## PRD Output Format
+## PRD 输出格式
 
-The generated PRD follows Google Docs style with these sections:
+生成的 PRD 遵循以下结构：
 
-1. **Overview** - 2-3 sentence summary
-2. **Research Findings** - Existing solutions, technical landscape, further research needed (optional but recommended)
-3. **Goals & Success Criteria** - Measurable objectives
-4. **User Stories** - As a [user], I want [goal], so that [benefit]
-5. **Functional Requirements** - Specific capabilities
-6. **Non-Functional Requirements** - Performance, security, UX
-7. **Constraints & Assumptions** - Limitations and prerequisites
-8. **Open Questions** - Items to resolve
-9. **Next Step** - Reference to `/plan`
+1. **概述** - 2-3 句话总结
+2. **调研发现** - 现有解决方案、技术现状、需要进一步调研的内容（可选但推荐）
+3. **目标与成功标准** - 可衡量的目标
+4. **用户故事** - 作为[用户]，我想要[目标]，以便[收益]
+5. **功能需求** - 具体能力
+6. **非功能需求** - 性能、安全、用户体验
+7. **约束与假设** - 限制和前提条件
+8. **待解决问题** - 需要解决的疑问
+9. **下一步** - 提示使用 `/plan` 或 `/tdd`
 
-## Example Usage
+## 使用示例
 
-### Scenario 1: Vague Feature Idea
+### 场景 1：模糊的功能想法
 
 ```
-User: /req I need to add user authentication
+用户: /req 添加用户认证功能
 
-Agent: Great! Let's clarify your requirements. A few questions:
+Agent: 好的！让我们澄清需求。几个问题：
 
-1. Who are the target users? (e.g., customers, admins, both?)
-2. What authentication methods? (email/password, social login, SSO?)
-3. Why is this needed now? (security requirement, new feature, compliance?)
+1. 目标用户是谁？（客户、管理员还是两者？）
+2. 使用什么认证方式？（邮箱/密码、社交登录、SSO？）
+3. 为什么现在需要？（安全要求、新功能、合规？）
 
-User: Customers only, email/password with Google OAuth option. 
-Security audit flagged our current system.
+用户: 仅客户，邮箱/密码和 Google OAuth 选项。安全审计标记了当前系统。
 
-Agent: Got it. Would you like deeper analysis on constraints and edge cases?
+Agent: 明白了。是否需要深入分析约束和边界情况？
 
-User: Yes
+用户: 是的
 
-[Extended questioning about sessions, password policies, 2FA, etc.]
+[关于会话、密码策略、双因素认证等的深入提问]
 
-Agent: Here's your PRD:
+Agent: 这是你的 PRD：
 
-# PRD: User Authentication System
+# PRD：用户认证系统
 
-## 1. Overview
-Add secure email/password authentication with optional Google OAuth 
-for customer accounts to address security audit findings.
+## 1. 概述
+添加安全的邮箱/密码认证，支持 Google OAuth，以解决安全审计发现的问题。
 
-## 2. Goals & Success Criteria
-- Pass security audit requirements
-- Support 10,000 concurrent sessions
-- < 200ms login response time
+## 2. 目标与成功标准
+- 通过安全审计要求
+- 支持 10,000 并发会话
+- 登录响应时间 < 200ms
 
-## 3. User Stories
+## 3. 用户故事
 ...
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✅ PRD 生成完成！
 
-下一步（请手动执行）：
-→ 运行 /plan 创建实现规划
-→ 或修改需求后继续
+📄 已保存至：.claude/reqs/20250406-user-auth-system.md
+
+请选择下一步：
+→ 运行 `/plan` —— 创建详细实施计划
+→ 运行 `/tdd` —— 直接进入测试驱动开发
+→ 直接说 "根据 PRD 执行" —— 我立即开始实现
+→ 或继续讨论需求 —— 修改 PRD 或补充需求
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-### Scenario 2: Well-Understood Feature
+### 场景 2：明确的功能
 
 ```
-User: /req Add dark mode toggle to settings page
+用户: /req 在设置页添加暗黑模式切换
 
-Agent: This seems like a simple feature. Quick questions:
+Agent: 这看起来是个简单的功能。快速确认：
 
-1. Who needs this? (all users or specific plan?)
-2. Should it respect system preference by default?
-3. Any timeline pressure?
+1. 谁需要这个功能？（所有用户还是特定套餐？）
+2. 是否默认跟随系统偏好？
+3. 有时间压力吗？
 
-User: All users, yes respect system default, no rush
+用户: 所有用户，是的跟随系统默认，不着急
 
-Agent: Got it. Generating quick PRD...
+Agent: 明白了。生成简化 PRD...
 
-# PRD: Dark Mode Toggle
+# PRD：暗黑模式切换
 
-## Overview
-Add dark mode toggle in settings with system preference detection.
+## 概述
+在设置中添加暗黑模式切换，支持系统偏好检测。
 
-## Requirements
-- [ ] Toggle in /settings/appearance
-- [ ] Respect system preference by default
-- [ ] Persist user choice in localStorage
-- [ ] Apply theme without page reload
+## 需求
+- [ ] 在 /settings/appearance 添加切换
+- [ ] 默认跟随系统偏好
+- [ ] 使用 localStorage 保存用户选择
+- [ ] 无需刷新页面应用主题
 
-## Acceptance Criteria
+## 验收标准
 ...
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✅ PRD 生成完成！
 
-下一步（请手动执行）：
-→ 运行 /plan 创建实现规划
-→ 或修改需求后继续
+📄 已保存至：.claude/reqs/20250406-dark-mode-toggle.md
+
+请选择下一步：
+→ 运行 `/plan` —— 创建详细实施计划
+→ 运行 `/tdd` —— 直接进入测试驱动开发
+→ 直接说 "根据 PRD 执行" —— 我立即开始实现
+→ 或继续讨论需求 —— 修改 PRD 或补充需求
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-## Quick Mode
+## 快速模式
 
-For simple features (< 1 day effort), the agent generates an abbreviated PRD:
+简单功能（< 1 天工作量），生成简化 PRD：
 
 ```markdown
-# PRD: [Simple Feature]
+# PRD：[功能名称]
 
-## Overview
-[1-2 sentences]
+## 概述
+[1-2 句话]
 
-## Requirements
-- [ ] Requirement 1
-- [ ] Requirement 2
+## 需求
+- [ ] 需求 1
+- [ ] 需求 2
 
-## Acceptance Criteria
-- [ ] Criterion 1
-- [ ] Criterion 2
+## 验收标准
+- [ ] 标准 1
+- [ ] 标准 2
 
-## Next Step
-Run `/plan` to create implementation plan
+## 下一步
+运行 `/plan` 创建实施计划，或 `/tdd` 直接开发，或说 "根据 PRD 执行"，或继续讨论修改 PRD
 ```
 
-## Integration with Other Commands
+## 与其他命令的集成
 
-After `/req` generates the PRD:
-1. **Review the PRD** - Ensure it captures your requirements
-2. **Run `/plan`** - Create implementation plan from the PRD
-3. **Run `/tdd`** - Start test-driven development (after planning)
+`/req` 生成 PRD 后，你有三个选择：
 
-**Important**: You must manually run these commands. `/req` will NOT automatically invoke them.
+### 选项 1：创建详细规划
+运行 `/plan`，agent 将：
+- 分析 PRD 并识别风险
+- 制定分阶段的实施计划
+- 等待你确认后再执行
 
-## Tips for Best Results
+### 选项 2：直接进入开发
+运行 `/tdd`，agent 将：
+- 基于 PRD 直接开始测试驱动开发
+- 先写测试，再实现，再重构
+- 自动验证 80%+ 覆盖率
 
-1. **Be honest about uncertainty** - If you're not sure about something, say so
-2. **Answer questions thoroughly** - More context = better PRD
-3. **Challenge assumptions** - The agent will question things that seem unclear
-4. **Iterate** - It's okay to refine the PRD multiple times
-5. **Review before planning** - Make sure the PRD is complete before running `/plan`
+### 选项 3：直接执行
+直接说 **"根据 PRD 执行"**，我将：
+- 理解 PRD 内容
+- 立即开始实现
+- 无需额外的规划步骤
 
-## Related Agents
+### 选项 4：继续讨论需求
+直接说 **"修改 PRD"** 或 **"补充需求"**，我将：
+- 继续和你讨论需求细节
+- 根据你的反馈修改 PRD
+- 迭代直到需求清晰完整
 
-This command invokes the `requirement-analyst` agent.
+**注意**：这四个选项完全由你选择，`/req` 不会自动调用任何命令。
 
-For manual installs, the source file lives at:
+## 最佳实践
+
+1. **坦诚表达不确定性** - 不确定的地方直接说明
+2. **充分回答问题** - 更多上下文 = 更好的 PRD
+3. **质疑假设** - agent 会质疑看似不清楚的地方
+4. **迭代优化** - 可以多次修改 PRD
+5. **规划前审阅** - 确保 PRD 完整后再运行 `/plan`
+
+## 相关 Agent
+
+此命令调用 `requirement-analyst` agent。
+
+如需手动安装，源文件位于：
 `agents/requirement-analyst.md`
