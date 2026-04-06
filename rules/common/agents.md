@@ -6,15 +6,14 @@
 
 | Agent | 用途 | 何时使用 |
 |-------|---------|-------------|
+| requirement-analyst | 需求分析 | 模糊需求、生成 PRD |
 | planner | 实现规划 | 复杂功能、重构 |
-| architect | 系统设计 | 架构决策 |
 | tdd-guide | 测试驱动开发 | 新功能、bug修复 |
 | code-reviewer | 代码审查 | 编写代码后 |
 | security-reviewer | 安全分析 | 提交前 |
 | build-error-resolver | 修复构建错误 | 构建失败时 |
 | e2e-runner | E2E 测试 | 关键用户流程 |
 | refactor-cleaner | 死代码清理 | 代码维护 |
-| doc-updater | 文档 | 更新文档 |
 
 ## 立即使用 Agent
 
