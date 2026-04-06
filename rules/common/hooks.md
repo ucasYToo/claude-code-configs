@@ -16,11 +16,15 @@
 
 ## Task* 最佳实践
 
+**强制规则：严禁使用 `todowrite` / `TodoWrite` 等已废弃工具；必须改用 `TaskCreate` / `TaskUpdate` / `TaskList` / `TaskGet`。**
+
 使用 TaskCreate/TaskUpdate/TaskList/TaskGet 工具来:
 - 跟踪多步骤任务的进度
 - 验证对指令的理解
 - 启用实时引导
 - 显示细粒度的实施步骤
+- **创建任务（TaskCreate）后再开始多步骤工作**
+- **完成后立即更新任务状态为 `completed`（TaskUpdate）**
 
 任务列表揭示:
 - 顺序错误的步骤
