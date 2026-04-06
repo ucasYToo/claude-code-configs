@@ -1,8 +1,11 @@
 ---
+name: req
 description: 生成产品需求文档（PRD）。根据复杂度自动选择快速或完整模式。
 ---
 
 # /req 命令
+
+> **指令**：当用户运行 `/req` 时，你必须**立即使用 `Agent` 工具调用 `requirement-analyst` agent**，将用户的完整需求传递给它。不要自己生成 PRD 或执行任何操作。
 
 快速生成 PRD。自动调用 `requirement-analyst` agent。
 

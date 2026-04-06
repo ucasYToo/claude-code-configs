@@ -1,7 +1,6 @@
 ---
 name: instinct-status
 description: 显示已学习的本能（项目 + 全局）及其置信度
-command: true
 ---
 
 # Instinct Status 命令

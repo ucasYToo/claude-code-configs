@@ -1,7 +1,6 @@
 ---
 name: instinct-import
 description: 从文件或 URL 导入本能在项目/全局范围
-command: true
 ---
 
 # Instinct Import 命令

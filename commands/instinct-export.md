@@ -1,7 +1,6 @@
 ---
 name: instinct-export
 description: 将本能从项目/全局范围导出到文件
-command: /instinct-export
 ---
 
 # Instinct Export 命令

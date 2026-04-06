@@ -1,4 +1,5 @@
 ---
+name: sync-claude-config
 description: 将项目库中的 Claude Code 配置同步到全局 ~/.claude/，并清理全局中不在项目库里的配置。支持 --dry-run 预览模式。
 ---
 

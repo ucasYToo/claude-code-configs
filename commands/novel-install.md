@@ -1,4 +1,5 @@
 ---
+name: novel-install
 description: 在当前项目的 .claude/ 目录下安装网络小说创作工具集（agents、commands、skills、templates）。
 ---
 

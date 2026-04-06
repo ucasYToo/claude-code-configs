@@ -1,7 +1,6 @@
 ---
 name: skill-create
 description: 分析本地 git 历史以提取编码模式并生成 SKILL.md 文件。Skill Creator GitHub App 的本地版本。
-allowed_tools: ["Bash", "Read", "Write", "Grep", "Glob"]
 ---
 
 # /skill-create - 本地技能生成
