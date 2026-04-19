@@ -21,6 +21,11 @@ Claude 原生工具（无需额外 MCP 配置）：
 - **WebSearch** — 网络搜索
 - **WebFetch** — 获取指定 URL 的完整页面内容
 
+可选工具（如有安装则优先使用）：
+- **gh (GitHub CLI)** — `gh search repos`、`gh search code`、`gh search issues`、`gh search prs`、`gh search commits`
+  - 技术调研的核心渠道，找开源实现、看社区活跃度、查代码示例、看 issue 讨论
+  - 安装：`brew install gh` / `apt install gh`
+
 ## 工作流
 
 ### 步骤 1：理解目标
@@ -43,17 +48,50 @@ Claude 原生工具（无需额外 MCP 配置）：
 
 ### 步骤 3：执行多源搜索
 
+#### 3.1 通用网络搜索（WebSearch）
+
 针对**每个**子问题，使用 WebSearch 进行搜索：
 
 ```
 WebSearch(query: "<子问题关键词>")
 ```
 
-**搜索策略：**
+#### 3.2 GitHub 搜索（gh CLI — 技术调研优先）
+
+当调研主题涉及技术、框架、库或开源生态时，**优先**使用 `gh search`：
+
+**搜索仓库（找项目、看流行度）：**
+```bash
+gh search repos "<关键词>" --sort stars --limit 10
+```
+
+**搜索代码（找实现示例、API 用法）：**
+```bash
+gh search code "<关键词>" --sort indexed --limit 10
+```
+
+**搜索 Issues（看已知问题、社区讨论）：**
+```bash
+gh search issues "<关键词>" --sort updated --limit 10
+```
+
+**搜索 PRs（看最新进展、功能开发）：**
+```bash
+gh search prs "<关键词>" --sort updated --limit 10
+```
+
+**搜索 Commits（看代码演进、维护活跃度）：**
+```bash
+gh search commits "<关键词>" --sort author-date --limit 10
+```
+
+#### 3.3 搜索策略
+
 - 每个子问题使用 2-3 种不同的关键词变体
 - 混合通用查询和新闻聚焦查询
+- **技术主题**：WebSearch + gh search 并行，GitHub 提供代码/仓库/社区一手数据
 - 目标总计 15-30 个独立来源
-- 优先级：学术论文、官方资料、权威新闻 > 博客 > 论坛
+- 优先级：学术论文、官方资料、权威新闻、GitHub 官方仓库 > 博客 > 论坛
 
 ### 步骤 4：深度阅读关键来源
 
