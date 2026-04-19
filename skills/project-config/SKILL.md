@@ -24,6 +24,97 @@ description: 指导在项目级 .claude/ 目录下正确创建和配置 skill、
 - **Write** — 创建新文件
 - **Edit** — 修改现有文件
 
+## 项目级目录结构总览
+
+### 完整 `.claude/` 目录树
+
+```
+your-project/
+├── CLAUDE.md                        # 项目指令文件（在根目录，不在 .claude/ 内）
+│                                    # 继承链：~/.claude/CLAUDE.md → ./CLAUDE.md → ./sub/CLAUDE.md
+│
+└── .claude/
+    ├── settings.json                # 项目权限、Hooks、规则（提交到 Git）
+    ├── settings.local.json          # 个人覆盖（.gitignore 排除，切勿提交）
+    │                                # 优先级：local.json > settings.json > ~/.claude/settings.json
+    │
+    ├── commands/                    # 自定义斜杠命令（向后兼容，推荐迁移到 skills/）
+    │   ├── review.md      → /review
+    │   ├── test.md        → /test
+    │   └── deploy.md      → /deploy
+    │
+    ├── skills/                      # 可复用工作流（commands 的替代方案，推荐）
+    │   ├── code-review/
+    │   │   ├── SKILL.md             # 主技能定义（必需）
+    │   │   └── examples/
+    │   │       └── sample.md        # 支持文件（可选）
+    │   └── deploy/
+    │       └── SKILL.md
+    │
+    ├── agents/                      # 专业化子 Agent 定义
+    │   ├── code-reviewer.md
+    │   └── security-auditor.md
+    │
+    ├── rules/                       # 模块化指令文件（会话启动自动加载）
+    │   ├── coding-style.md
+    │   ├── api-design.md
+    │   ├── testing.md
+    │   └── security.md
+    │
+    ├── docs/                        # 共享参考文档（Claude 按需读取，不常驻上下文）
+    │   ├── architecture.md
+    │   ├── coding-standards.md
+    │   └── deployment-guide.md
+    │
+    ├── hooks/                       # Hooks 配置文件（与 settings.json hooks 互补）
+    │   ├── hooks.json
+    │   └── README.md
+    │
+    ├── worktrees/                   # 隔离的 git worktree（由 Claude Code 自动管理）
+    │   └── <random-name>/
+    │       └── ...                  # 临时工作目录
+    │
+    └── .gitignore                   # 排除 settings.local.json 和 worktrees/
+```
+
+### 全局 vs 项目级对比
+
+| 配置项 | 全局 `~/.claude/` | 项目级 `your-repo/.claude/` |
+|--------|-------------------|----------------------------|
+| `CLAUDE.md` | `~/.claude/CLAUDE.md`（个人默认） | `./CLAUDE.md`（项目特定） |
+| `settings.json` | `~/.claude/settings.json`（个人默认） | `.claude/settings.json`（团队共享） |
+| `settings.local.json` | 无 | `.claude/settings.local.json`（个人覆盖，不提交） |
+| `commands/` | `~/.claude/commands/` | `.claude/commands/`（项目优先） |
+| `skills/` | `~/.claude/skills/` | `.claude/skills/`（项目优先） |
+| `agents/` | `~/.claude/agents/` | `.claude/agents/`（项目优先） |
+| `rules/` | `~/.claude/rules/` | `.claude/rules/`（项目优先） |
+| `docs/` | 无 | `.claude/docs/`（项目参考文档） |
+| `hooks/` | 无 | `.claude/hooks/`（项目级 Hooks） |
+| `worktrees/` | 无 | `.claude/worktrees/`（临时隔离目录） |
+
+### 文件放置规则
+
+**必须放在项目根目录**：
+- `CLAUDE.md` — 始终放在 `./CLAUDE.md`，**不能**放在 `.claude/CLAUDE.md`
+
+**必须放在 `.claude/` 内**：
+- `settings.json`、`settings.local.json`
+- `commands/*.md`
+- `skills/<name>/SKILL.md`
+- `agents/*.md`
+- `rules/*.md`
+- `docs/*.md`
+
+**会被自动加载的**：
+- `CLAUDE.md`（启动时加载到系统提示）
+- `.claude/rules/*.md`（启动时按字母顺序追加到 CLAUDE.md 后）
+- `.claude/settings.json`（启动时读取）
+
+**需要手动触发的**：
+- Skills：通过 `/skill-name` 或 `match_globs` 匹配触发
+- Agents：通过 `Agent` 工具调用时指定 `subagent_type`
+- Commands：通过 `/<command-name>` 触发
+
 ## 配置类型速查
 
 | 类型 | 文件位置 | 用途 | 触发方式 |
@@ -46,12 +137,35 @@ description: 指导在项目级 .claude/ 目录下正确创建和配置 skill、
 先检查项目当前的 `.claude/` 配置状态：
 
 ```bash
+# 检查根目录是否有 CLAUDE.md
+ls -la CLAUDE.md 2>/dev/null || echo "无根目录 CLAUDE.md"
+
+# 检查 .claude/ 目录整体结构
 ls -la .claude/ 2>/dev/null || echo "项目尚无 .claude/ 配置"
-ls -la .claude/skills/ 2>/dev/null || echo "无 skills"
-ls -la .claude/agents/ 2>/dev/null || echo "无 agents"
-ls -la .claude/commands/ 2>/dev/null || echo "无 commands"
-ls -la .claude/rules/ 2>/dev/null || echo "无 rules"
+
+# 检查各子目录内容
+echo "=== skills ==="
+ls -la .claude/skills/ 2>/dev/null || echo "  无"
+echo "=== agents ==="
+ls -la .claude/agents/ 2>/dev/null || echo "  无"
+echo "=== commands ==="
+ls -la .claude/commands/ 2>/dev/null || echo "  无"
+echo "=== rules ==="
+ls -la .claude/rules/ 2>/dev/null || echo "  无"
+echo "=== docs ==="
+ls -la .claude/docs/ 2>/dev/null || echo "  无"
+
+# 检查已提交的 vs 未提交的配置
+git status --short .claude/ CLAUDE.md 2>/dev/null || echo "非 git 仓库或配置未跟踪"
 ```
+
+**诊断清单**：
+- [ ] 根目录是否有 `CLAUDE.md`
+- [ ] `.claude/` 目录是否存在
+- [ ] 各子目录（skills/agents/commands/rules/docs）是否已创建
+- [ ] 现有配置是否已提交到 Git
+- [ ] `.claude/settings.local.json` 是否被 `.gitignore` 排除
+- [ ] 全局 `~/.claude/` 是否已有同名配置（避免冲突）
 
 ### 步骤 2：确定配置类型
 
@@ -86,8 +200,15 @@ ls -la .claude/rules/ 2>/dev/null || echo "无 rules"
 **目录结构**：
 ```
 .claude/skills/<skill-name>/
-└── SKILL.md
+├── SKILL.md              # 主技能定义（必需）
+├── templates/            # 模板文件（可选）
+│   └── template.md
+├── examples/             # 示例文件（可选）
+│   └── example.md
+└── README.md             # 补充说明（可选）
 ```
+
+**支持多文件**：Skill 目录可以包含多个文件和子目录，Claude 按需加载。超过 300 行的 skill 应拆分为专注的子技能或多个支持文件。
 
 **命名规则**：
 - 使用小写字母和连字符：`deep-research`、`code-review`
