@@ -1,37 +1,383 @@
 ---
 name: project-config
-description: 为项目初始化 Claude Code 项目级配置（.claude/ 目录 + CLAUDE.md），使 Claude 从通用助手转变为项目感知、团队对齐的开发工具。在新项目启动、团队 onboarding、或现有项目缺少 AI 辅助配置时使用。
+description: 指导在项目级 .claude/ 目录下正确创建和配置 skill、agent、command、rule 等内容。提供 frontmatter 参考、目录结构规范、命名约定和常见错误预防。在需要为项目新增 AI 辅助配置时使用。
 ---
 
-# 项目级 Claude Code 配置
+# 项目级配置开发指南
 
-为项目搭建完整的 `.claude/` 配置体系，包含 `CLAUDE.md`、settings、rules、agents、skills、docs 等，让 Claude 深度理解项目上下文。
+指导你在项目 `.claude/` 目录下正确创建 skill、agent、command、rule 等配置项，确保它们能被 Claude Code 正确识别和使用。
 
 ## 何时激活
 
-- 新项目启动，需要配置 Claude Code 项目级支持
-- 现有项目缺少 `.claude/` 配置，希望提升 AI 辅助开发体验
-- 团队成员 onboarding，需要统一 AI 辅助开发规范
-- 项目技术栈/架构变更，需要更新 Claude Code 配置
-- 用户说"初始化项目配置"、"配置 claude"、"设置 .claude"、"新项目"
+- 想为当前项目新增一个 skill
+- 想为当前项目新增一个 agent
+- 想为当前项目新增一个 command（斜杠命令）
+- 想为当前项目新增规则文件（rules）
+- 不确定该用 skill 还是 command 还是 agent
+- 不确定 frontmatter 怎么写
+- 用户说"新增 skill"、"创建 agent"、"加个命令"、"写个 rule"
 
 ## 依赖工具
 
-- **Bash** — 创建目录结构、检查文件状态
-- **Read** — 读取现有配置文件
-- **Write** — 创建新配置文件
+- **Bash** — 检查目录结构、文件状态
+- **Read** — 读取现有配置
+- **Write** — 创建新文件
 - **Edit** — 修改现有文件
 
-## 配置体系概览
+## 配置类型速查
 
-Claude Code 采用**两级配置**：
+| 类型 | 文件位置 | 用途 | 触发方式 |
+|------|----------|------|----------|
+| **Skill** | `.claude/skills/<name>/SKILL.md` | 复杂可复用工作流 | `/skill-name` 或 `match_globs` 自动触发 |
+| **Agent** | `.claude/agents/<name>.md` | 专用子 Agent | `Agent` 工具调用时通过 name 匹配 |
+| **Command** | `.claude/commands/<name>.md` | 简单斜杠命令 | `/<command-name>` |
+| **Rule** | `.claude/rules/<name>.md` | 模块化指令片段 | 会话启动时自动加载 |
 
-| 层级 | 位置 | 用途 | 是否提交 Git |
-|------|------|------|-------------|
-| **全局** | `~/.claude/` | 个人偏好、个人技能/Agent | 否 |
-| **项目级** | `your-repo/.claude/` + `./CLAUDE.md` | 团队共享规则、项目上下文 | 是（除 `settings.local.json`） |
+**选择建议**：
+- 多步骤工作流、需要自动触发 → **Skill**
+- 专用角色（如安全审查、代码审查）→ **Agent**
+- 简单一句话模板 → **Command**
+- 补充开发规范（编码风格、测试要求）→ **Rule**
 
-**继承链**（按顺序读取，每层扩充前一层）：
+## 工作流
+
+### 步骤 1：诊断现有结构
+
+先检查项目当前的 `.claude/` 配置状态：
+
+```bash
+ls -la .claude/ 2>/dev/null || echo "项目尚无 .claude/ 配置"
+ls -la .claude/skills/ 2>/dev/null || echo "无 skills"
+ls -la .claude/agents/ 2>/dev/null || echo "无 agents"
+ls -la .claude/commands/ 2>/dev/null || echo "无 commands"
+ls -la .claude/rules/ 2>/dev/null || echo "无 rules"
+```
+
+### 步骤 2：确定配置类型
+
+根据需求选择正确的类型：
+
+**Skill 适合的场景**：
+- 多步骤、有条件分支的工作流
+- 需要自动触发（通过文件匹配）
+- 需要支持文件和子技能
+- 描述常驻上下文，内容按需加载
+
+**Agent 适合的场景**：
+- 需要隔离上下文执行
+- 需要限制可用工具
+- 需要特定模型或系统提示
+- 有明确的角色定位（如"安全审查员"）
+
+**Command 适合的场景**：
+- 简单的一句话模板
+- 向后兼容已有项目
+- 不需要自动触发
+
+**Rule 适合的场景**：
+- 补充开发规范到系统提示
+- 按领域拆分 CLAUDE.md
+- 需要 `paths` 范围限定
+
+### 步骤 3：创建文件（按类型）
+
+#### Skill 创建规范
+
+**目录结构**：
+```
+.claude/skills/<skill-name>/
+└── SKILL.md
+```
+
+**命名规则**：
+- 使用小写字母和连字符：`deep-research`、`code-review`
+- 避免空格、下划线、驼峰
+- 语义化命名，一眼能看出用途
+
+**SKILL.md 格式**：
+
+```markdown
+---
+name: skill-name
+description: 一句话描述技能用途，在技能选择器中显示
+# 可选字段：
+# plugin_namespace: "group-name"    # 逻辑分组，避免冲突
+# match_globs: ["src/**/*.ts"]       # 自动触发文件模式
+# tools: ["Read", "Edit", "Bash"]    # 技能可用工具
+# model: sonnet                      # 特定模型
+# context: fork | inline             # 执行上下文
+# disable-model-invocation: true     # 禁止自动触发
+---
+
+# Skill 标题
+
+## 何时激活
+- 触发条件 1
+- 触发条件 2
+
+## 工作流
+
+### 步骤 1：...
+### 步骤 2：...
+
+## 质量规则
+1. ...
+2. ...
+
+## 示例
+```
+"示例用户输入"
+```
+```
+
+**关键要求**：
+- `name`：必需，全局唯一（不与其他 skill 冲突）
+- `description`：必需，Claude 用此判断是否加载该 skill
+- `match_globs`：可选，匹配时自动触发，不依赖手动调用
+- 正文结构清晰：何时激活 → 工作流 → 质量规则 → 示例
+
+#### Agent 创建规范
+
+**文件位置**：
+```
+.claude/agents/<agent-name>.md
+```
+
+**命名规则**：
+- 小写字母和连字符：`security-reviewer`、`code-reviewer`
+- 与全局 `~/.claude/agents/` 中的 agent 不冲突
+
+**Agent 文件格式**：
+
+```markdown
+---
+name: agent-name
+description: 一句话描述 Agent 用途和触发场景
+tools:
+  - Read
+  - Grep
+  - Glob
+# 可选字段：
+# disallowedTools:
+#   - Edit
+#   - Write
+# model: sonnet | haiku | opus
+# permissionMode: default | plan
+# maxTurns: 20
+# skills:
+#   - skill-name
+# memory: true
+# isolation: worktree
+# color: blue
+---
+
+You are a [角色描述].
+
+Your responsibilities:
+1. ...
+2. ...
+
+Constraints:
+- ...
+- ...
+```
+
+**关键要求**：
+- `name`：必需，唯一标识符
+- `description`：必需，Claude 用此决定何时调用
+- `tools`：指定允许的工具列表
+- `disallowedTools`：显式禁止的工具（如只读 agent 禁止 Edit/Write）
+- **不要**在 tools 中包含 `Agent` 或 `Task` — 子 Agent 不能再派生子 Agent
+- 如果省略 `tools`，子 Agent 继承主线程所有工具（包括 MCP）
+
+#### Command 创建规范
+
+**文件位置**：
+```
+.claude/commands/<command-name>.md
+```
+
+**Command 文件格式**：
+
+```markdown
+---
+description: 命令的描述，在 / 菜单中显示
+---
+
+# 提示模板内容
+
+当用户输入 /command-name 时，执行以下操作：
+1. ...
+2. ...
+```
+
+**变量支持**：
+- `$ARGUMENTS` — 用户输入的所有参数
+- `$1`, `$2`... — 位置参数
+
+**示例**（带参数的 PR 审查命令）：
+```markdown
+---
+description: "审查指定 PR"
+---
+
+Review PR #$1 with priority $2
+```
+用法：`/review-pr 456 high`
+
+**关键要求**：
+- 基础格式只需 description frontmatter + Markdown 正文
+- 不支持 `allowed-tools`、`context: fork` 等新特性
+- 新功能仅限 Skill 使用，Command 仅向后兼容
+- 建议新项目直接使用 Skill
+
+#### Rule 创建规范
+
+**文件位置**：
+```
+.claude/rules/<rule-name>.md
+```
+
+**Rule 文件格式**：
+
+```markdown
+---
+paths: src/frontend/**/*.tsx   # 可选：限定作用范围
+---
+
+## 规则标题
+
+- 规则内容 1
+- 规则内容 2
+```
+
+**关键要求**：
+- 所有 `.claude/rules/*.md` 会话启动时自动按字母顺序加载
+- 内容追加到 `CLAUDE.md` 之后
+- 使用 `paths` 限定范围，避免无关规则污染上下文
+- 每个文件聚焦一个主题，100-200 行最佳
+
+### 步骤 4：验证配置
+
+创建后执行验证：
+
+```bash
+# 检查文件路径和命名
+ls -la .claude/skills/    # skill 目录是否存在
+ls -la .claude/agents/    # agent 文件是否存在
+ls -la .claude/commands/  # command 文件是否存在
+ls -la .claude/rules/     # rule 文件是否存在
+
+# 检查 frontmatter 格式
+cat .claude/skills/<name>/SKILL.md | head -20
+```
+
+**验证清单**：
+- [ ] 文件路径和命名符合规范
+- [ ] frontmatter 包含 `name` 和 `description`（skill/agent/command 必需）
+- [ ] YAML frontmatter 格式正确（`---` 包裹、无缩进错误）
+- [ ] 没有将项目级配置放到全局 `~/.claude/`
+- [ ] `settings.local.json` 未被提交
+
+### 步骤 5：测试配置
+
+**Skill 测试**：
+1. 在 Claude Code 中输入 `/<skill-name>` 调用
+2. 检查是否正确加载 skill 内容
+3. 验证工作流步骤是否正确执行
+
+**Agent 测试**：
+1. 通过 `Agent` 工具调用，指定 `subagent_type: <agent-name>`
+2. 验证是否正确加载系统提示
+3. 检查工具限制是否生效
+
+**Command 测试**：
+1. 在 Claude Code 中输入 `/<command-name>`
+2. 验证模板内容是否正确触发
+
+**Rule 测试**：
+1. 启动新会话
+2. 检查规则内容是否出现在系统提示中
+3. 验证 `paths` 限定是否正确生效
+
+### 步骤 6：提交到版本控制
+
+```bash
+git add .claude/
+git commit -m "chore: 新增 [skill/agent/command/rule] [name]
+
+- 添加 [类型] [name]
+- 用途：[描述]
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
+```
+
+**务必排除**：
+- `.claude/settings.local.json`
+- `.claude/worktrees/`
+
+## 常见错误与预防
+
+| 错误 | 原因 | 解决 |
+|------|------|------|
+| Skill 未被识别 | 目录名与 frontmatter `name` 不一致 | 确保目录名和 `name` 一致 |
+| Agent 无法调用 | `description` 不够清晰 | 写清楚触发场景和用途 |
+| Command 不生效 | 文件不在 `.claude/commands/` | 检查路径 |
+| Rule 未加载 | 文件不在 `.claude/rules/` | 检查路径 |
+| frontmatter 解析失败 | YAML 格式错误 | 检查缩进、引号、冒号后空格 |
+| 子 Agent 无限递归 | tools 中包含 `Agent` | 移除 `Agent` 和 `Task` 工具 |
+| 配置未生效 | 放在全局而非项目级 | 确认是 `.claude/` 而非 `~/.claude/` |
+
+## frontmatter 字段速查表
+
+### Skill frontmatter
+
+| 字段 | 必需 | 说明 |
+|------|------|------|
+| `name` | 是 | 唯一标识符 |
+| `description` | 是 | 技能选择器中显示 |
+| `plugin_namespace` | 否 | 逻辑分组 |
+| `match_globs` | 否 | 自动触发文件模式 |
+| `tools` | 否 | 可用工具列表 |
+| `model` | 否 | 特定模型 |
+| `context` | 否 | `fork` 或 `inline` |
+| `disable-model-invocation` | 否 | 禁止自动触发 |
+
+### Agent frontmatter
+
+| 字段 | 必需 | 说明 |
+|------|------|------|
+| `name` | 是 | 唯一标识符 |
+| `description` | 是 | 调用决策依据 |
+| `tools` | 否 | 允许的工具 |
+| `disallowedTools` | 否 | 禁止的工具 |
+| `model` | 否 | 模型偏好 |
+| `maxTurns` | 否 | 最大轮数 |
+| `skills` | 否 | 自动加载的技能 |
+| `isolation` | 否 | `worktree` 等隔离模式 |
+| `color` | 否 | UI 颜色 |
+
+### Command frontmatter
+
+| 字段 | 必需 | 说明 |
+|------|------|------|
+| `name` | 否 | 描述性名称 |
+| `description` | 是 | / 菜单中显示 |
+
+### Rule frontmatter
+
+| 字段 | 必需 | 说明 |
+|------|------|------|
+| `paths` | 否 | 限定作用范围的 glob 模式 |
+
+## 优先级与继承
+
+**配置加载优先级**（从高到低）：
+1. `settings.local.json`（个人覆盖）
+2. `.claude/settings.json`（项目级）
+3. `~/.claude/settings.json`（全局默认）
+
+**CLAUDE.md 继承链**：
 ```
 ~/.claude/CLAUDE.md
        ↓（扩充）
@@ -40,290 +386,17 @@ Claude Code 采用**两级配置**：
 ./subdirectory/CLAUDE.md
 ```
 
-## 工作流
-
-### 步骤 1：诊断现有配置
-
-检查项目是否已有配置：
-
-```bash
-# 检查现有配置
-ls -la .claude/ 2>/dev/null || echo "无 .claude/ 目录"
-cat CLAUDE.md 2>/dev/null || echo "无 CLAUDE.md"
-cat .claude/settings.json 2>/dev/null || echo "无 settings.json"
-```
-
-### 步骤 2：创建目录结构
-
-```bash
-mkdir -p .claude/{commands,rules,skills,agents,docs,worktrees}
-touch .claude/.gitignore
-```
-
-`.claude/.gitignore` 内容：
-```gitignore
-# 个人覆盖，切勿提交
-settings.local.json
-
-# 工作目录
-worktrees/
-
-# 临时文件
-*.tmp
-```
-
-### 步骤 3：编写 CLAUDE.md（核心）
-
-`CLAUDE.md` 位于**项目根目录**（不在 `.claude/` 内），是 Claude Code 最重要的配置文件。
-
-**原则**：
-- 精简聚焦，推荐 80-100 行，最大 500 行
-- 正面表述：说"使用 X"而非"不要用 Y"
-- 提供具体示例
-- 关键行为放在顶部
-
-**推荐结构模板**：
-
-```markdown
-# [项目名称]
-
-## 架构概览
-- 前端：[框架 + 语言]
-- 后端：[框架 + 语言]
-- 数据库：[类型]
-- 部署：[平台/方式]
-
-## 开发指南
-- [编码规范]
-- [测试要求]
-- [Git 工作流]
-- [提交消息格式]
-
-## 关键文件和目录
-- `[path/]` — [说明]
-- `[path/]` — [说明]
-
-## 工具选择
-| 操作 | 工具 | 原因 |
-|------|------|------|
-| 读取文件 | `Read()` | 处理编码和大文件 |
-| 搜索代码 | `Grep()` | 返回结构化匹配 |
-| 运行命令 | `Bash()` | 统一执行环境 |
-
-## 当前优先级
-- [正在进行的重点]
-```
-
-### 步骤 4：配置 settings.json
-
-`.claude/settings.json` 控制权限与自动化。
-
-**基础模板**：
-
-```json
-{
-  "permissions": {
-    "allow": ["Read", "Edit", "Bash", "Glob", "Grep"],
-    "deny": [],
-    "requireApproval": ["Bash", "Write"]
-  },
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "command": "npx prettier --write \"$FILEPATH\" 2>/dev/null || true",
-        "description": "编辑后自动格式化"
-      }
-    ]
-  }
-}
-```
-
-**关键字段说明**：
-
-| 字段 | 说明 |
-|------|------|
-| `permissions.allow` | 允许自动调用的工具 |
-| `permissions.deny` | 禁止使用的工具 |
-| `permissions.requireApproval` | 必须人工确认的工具 |
-| `hooks.SessionStart` | 会话开始时执行 |
-| `hooks.PreToolUse` | 工具执行前执行（可阻止） |
-| `hooks.PostToolUse` | 工具成功后执行 |
-
-**支持的 Hooks 事件**（常用）：
-
-| 事件 | 触发时机 | 能否阻止 | 典型用途 |
-|------|----------|---------|----------|
-| `SessionStart` | 新会话开始 | 否 | 加载项目上下文 |
-| `PreToolUse` | 工具执行前 | **是** | 安全门禁、验证输入 |
-| `PostToolUse` | 工具成功后 | 否 | 自动格式化、测试 |
-| `Stop` | Claude 完成响应 | 否 | 质量检查 |
-
-### 步骤 5：创建模块化 Rules
-
-`.claude/rules/` 存放按领域拆分的指令文件，Claude 启动时自动加载。
-
-**推荐拆分**：
-
-```
-.claude/rules/
-├── coding-style.md     # 编码风格
-├── testing.md          # 测试策略
-├── api-design.md       # API 设计规范
-├── security.md         # 安全规范
-└── git-workflow.md     # Git 工作流
-```
-
-**带作用范围的规则**（限定到特定路径）：
-
-```markdown
----
-paths: src/frontend/**/*.tsx
----
-
-## 前端组件规范
-- 使用函数组件 + Hooks
-- Props 类型使用 `interface`
-```
-
-### 步骤 6：配置 Agents（可选）
-
-`.claude/agents/*.md` 定义专用子 Agent。
-
-**示例**：
-
-```markdown
----
-name: code-reviewer
-description: 审查代码质量和潜在问题
-model: sonnet
-tools:
-  - Read
-  - Grep
-  - Glob
-disallowedTools:
-  - Edit
-  - Write
----
-
-You are a code reviewer. Focus on:
-- Code quality and readability
-- Potential bugs
-- Security issues
-- Performance concerns
-
-Do NOT fix issues — only report them.
-```
-
-### 步骤 7：配置 Skills（可选）
-
-`.claude/skills/<name>/SKILL.md` 定义可复用工作流。
-
-**示例结构**：
-
-```
-.claude/skills/
-├── deploy/
-│   └── SKILL.md
-└── code-review/
-    └── SKILL.md
-```
-
-**SKILL.md 格式**：
-
-```markdown
----
-name: deploy
-description: 执行项目部署流程
----
-
-## 部署步骤
-
-1. 运行测试：`npm test`
-2. 构建项目：`npm run build`
-3. 部署到 [平台]
-4. 验证部署状态
-```
-
-### 步骤 8：配置 Docs（可选）
-
-`.claude/docs/` 存放详细参考文档，Claude 按需读取（不常驻上下文）。
-
-```
-.claude/docs/
-├── architecture.md
-├── api-reference.md
-└── deployment-guide.md
-```
-
-**与 CLAUDE.md 的区别**：
-
-| 特性 | `CLAUDE.md` | `.claude/docs/*.md` |
-|------|-------------|---------------------|
-| 加载时机 | 会话启动自动加载 | 按需读取 |
-| 上下文消耗 | 始终占用 Token | 仅读取时占用 |
-| 内容长度 | 精简（<500 行） | 可以很长 |
-| 用途 | 行为指令 | 参考信息 |
-
-### 步骤 9：提交到版本控制
-
-```bash
-# 确保 settings.local.json 被忽略
-git add CLAUDE.md .claude/
-git status
-
-# 提交
-git commit -m "chore: 初始化 Claude Code 项目配置
-
-- 添加 CLAUDE.md 项目指令
-- 配置 .claude/settings.json 权限与自动化
-- 添加 rules/ 模块化开发规范
-- 添加 agents/ 专用子 Agent（如有）
-- 添加 skills/ 可复用工作流（如有）
-
-Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
-```
-
-**务必排除**：
-- `.claude/settings.local.json`（个人覆盖）
-- `.claude/worktrees/`（临时工作目录）
-
-## 安全清单
-
-- [ ] `settings.local.json` 已加入 `.gitignore`
-- [ ] 未在 `CLAUDE.md` 中硬编码密钥
-- [ ] `permissions.deny` 包含敏感工具（如需要）
-- [ ] `requireApproval` 包含破坏性操作（Bash、Write）
-- [ ] Hooks 命令经过审查，无恶意脚本
-- [ ] 未使用 `--dangerously-skip-permissions`
-
-## 更新与维护
-
-- 项目架构变更时同步更新 `CLAUDE.md`
-- 新增技术规范时添加 `rules/` 文件
-- 团队约定变更时更新 `settings.json`
-- 将配置变更纳入 PR 审查流程
-- 新成员 onboarding 时审查 `CLAUDE.md`
-
-## 常见问题
-
-**Q: `CLAUDE.md` 放在哪里？**
-A: 项目根目录 `./CLAUDE.md`，**不是** `.claude/CLAUDE.md`。
-
-**Q: `settings.local.json` 是什么？**
-A: 个人覆盖配置，优先级高于 `settings.json`，**切勿提交到 Git**。
-
-**Q: Commands 和 Skills 有什么区别？**
-A: Commands 是单文件斜杠命令（向后兼容），Skills 是多文件工作流（推荐）。同名时 Skills 优先。
-
-**Q: Rules 和 CLAUDE.md 有什么区别？**
-A: `CLAUDE.md` 是主指令文件，始终加载。`rules/` 是模块化拆分，按领域组织，支持 `paths` 范围限定。
+**配置合并策略**：
+- `settings.json`：合并而非替换，项目级覆盖同名键
+- `CLAUDE.md`：继承追加，子目录追加到父目录之后
+- Rules：按字母顺序加载，追加到 `CLAUDE.md` 之后
 
 ## 示例
 
 ```
-"帮我初始化这个 React 项目的 Claude Code 配置"
-"新项目需要配置 .claude 目录"
-"给这个项目添加 Claude Code 支持"
-"更新现有项目的 CLAUDE.md"
+"帮我给这个项目新增一个代码审查 skill"
+"创建一个 deploy agent"
+"我想加个 /test 命令"
+"给前端代码加一条 rule"
+"Skill 和 Command 我该用哪个？"
 ```
