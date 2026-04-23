@@ -12,6 +12,7 @@
 - `requirement-analyst` - 需求工程专家
 - `planner` - 实现规划专家
 - `tdd-guide` - 测试驱动开发专家
+- `skill-retrospective` - Skill 执行质量回顾专家
 
 ### Commands
 - `/req` - 需求澄清，生成 PRD
@@ -43,6 +44,7 @@
 - 需求模糊 → 自动调用 `requirement-analyst`
 - 复杂功能 → 自动调用 `planner`
 - 编写代码 → 自动调用 `tdd-guide`
+- Skill 执行后需要回顾 → 调用 `skill-retrospective`（用户说"回顾"或 Stop hook 提示时）
 
 ### Task 工具使用
 

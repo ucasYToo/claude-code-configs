@@ -184,7 +184,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"stop:check-console-log\" \"scripts/hooks/check-console-log.js\" \"standard,strict\""
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"stop:check-console-log\" \"scripts/hooks/check-console-log.js\" \"minimal,standard,strict\""
           }
         ],
         "description": "Check for console.log in modified files after each response"
@@ -224,6 +224,18 @@
           }
         ],
         "description": "Track token and cost metrics per session"
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$HOME/.claude/hooks/skill-retro-trigger.js\"",
+            "async": true,
+            "timeout": 5
+          }
+        ],
+        "description": "Detect skill invocations and prompt for execution quality retrospective"
       }
     ],
     "SessionEnd": [

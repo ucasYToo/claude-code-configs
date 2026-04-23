@@ -31,6 +31,7 @@
 | `build-error-resolver` | [agents/build-error-resolver.md](agents/build-error-resolver.md) | 构建错误修复 |
 | `refactor-cleaner` | [agents/refactor-cleaner.md](agents/refactor-cleaner.md) | 死代码清理 |
 | `e2e-runner` | [agents/e2e-runner.md](agents/e2e-runner.md) | E2E 测试执行 |
+| `skill-retrospective` | [agents/skill-retrospective.md](agents/skill-retrospective.md) | Skill 执行质量回顾 |
 
 ### 3. Rules (规则)
 
